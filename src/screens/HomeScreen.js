@@ -1,16 +1,15 @@
+// HomeScreen.js
 import React from 'react';
-import { View, Text, FlatList, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import useFetchAnimes from '../hooks/useFetch';
-import AnimeCard from '../components/AnimeCard';
 
 export default function HomeScreen({ navigation }) {
   const { animes, loading } = useFetchAnimes();
 
   if (loading) {
     return (
-      <View style={styles.loader}>
-        <ActivityIndicator size="large" color="#ff9900" />
-        <Text>Carregando animes...</Text>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#ff6600" />
       </View>
     );
   }
@@ -20,13 +19,32 @@ export default function HomeScreen({ navigation }) {
       data={animes}
       keyExtractor={(item) => item.mal_id.toString()}
       numColumns={2}
-      renderItem={({ item }) => <AnimeCard anime={item} />}
-      contentContainerStyle={styles.list}
+      contentContainerStyle={styles.listContainer}
+      renderItem={({ item }) => (
+        <TouchableOpacity
+          style={styles.card}
+          onPress={() => navigation.navigate('Detail', { anime: item })}
+        >
+          <Image source={{ uri: item.images.jpg.image_url }} style={styles.image} />
+          <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
+        </TouchableOpacity>
+      )}
     />
   );
 }
 
 const styles = StyleSheet.create({
-  loader: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  list: { padding: 10 }
+  listContainer: { padding: 10 },
+  loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  card: {
+    flex: 1,
+    margin: 8,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 10,
+    overflow: 'hidden',
+    alignItems: 'center',
+    elevation: 2
+  },
+  image: { width: 150, height: 200, resizeMode: 'cover' },
+  title: { padding: 8, fontWeight: 'bold', textAlign: 'center' }
 });
