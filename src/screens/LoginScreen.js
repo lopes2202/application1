@@ -1,60 +1,35 @@
+// src/screens/LoginScreen.js
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text, StyleSheet, Alert } from 'react-native';
- import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
-//import { auth } from '../../firebaseconfig.js'; 
+import { View, TextInput, Button, StyleSheet, Text } from 'react-native';
+import { useUser } from '../context/UserContext';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
+  const { setUser } = useUser();
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
 
-  const handleLogin = async () => {
-    try {
-      // await signInWithEmailAndPassword(auth, email, senha);
-      navigation.replace('Home'); // simula login
-    } catch (error) {
-      Alert.alert('Erro no login', error.message);
-    }
-  };
-
-  const handleRegister = async () => {
-    try {
-      // await createUserWithEmailAndPassword(auth, email, senha);
-      Alert.alert('Registro realizado com sucesso!');
-    } catch (error) {
-      Alert.alert('Erro no registro', error.message);
+  const handleLogin = () => {
+    if (email) {
+      setUser({ email });
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Entrar</Text>
+      <Text style={styles.title}>Login</Text>
       <TextInput
-        placeholder="Email"
-        style={styles.input}
+        placeholder="Digite seu e-mail"
         value={email}
         onChangeText={setEmail}
+        style={styles.input}
         keyboardType="email-address"
       />
-      <TextInput
-        placeholder="Senha"
-        style={styles.input}
-        value={senha}
-        onChangeText={setSenha}
-        secureTextEntry
-      />
-      <Button title="Login" onPress={handleLogin} />
-      <Text style={styles.or}>ou</Text>
-      <Button title="Registrar" onPress={handleRegister} />
+      <Button title="Entrar" onPress={handleLogin} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#fff' },
-  title: { fontSize: 24, fontWeight: 'bold', textAlign: 'center', marginBottom: 20 },
-  input: {
-    height: 50, borderColor: '#ccc', borderWidth: 1, borderRadius: 8,
-    paddingHorizontal: 10, marginBottom: 15
-  },
-  or: { textAlign: 'center', marginVertical: 10, color: '#999' }
+  container: { flex: 1, justifyContent: 'center', padding: 20 },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
+  input: { borderWidth: 1, borderColor: '#ccc', padding: 10, borderRadius: 5, marginBottom: 15 },
 });

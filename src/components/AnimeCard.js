@@ -1,75 +1,51 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Ionicons } from '@expo/vector-icons';
+import { useUser } from '../context/UserContext';
 
-export default function AnimeCard({ anime }) {
-  const [favorited, setFavorited] = useState(false);
+export default function AnimeCard({ anime, onPress }) {
+  const { favorites, toggleFavorite } = useUser();
 
-  useEffect(() => {
-    checkIfFavorited();
-  }, []);
-
-  const checkIfFavorited = async () => {
-    const stored = await AsyncStorage.getItem('@favoritos');
-    const list = stored ? JSON.parse(stored) : [];
-    const exists = list.some((item) => item.mal_id === anime.mal_id);
-    setFavorited(exists);
-  };
-
-  const toggleFavorite = async () => {
-    const stored = await AsyncStorage.getItem('@favoritos');
-    const list = stored ? JSON.parse(stored) : [];
-
-    let updatedList;
-    if (favorited) {
-      updatedList = list.filter((item) => item.mal_id !== anime.mal_id);
-    } else {
-      updatedList = [...list, anime];
-    }
-
-    await AsyncStorage.setItem('@favoritos', JSON.stringify(updatedList));
-    setFavorited(!favorited);
-  };
+  const isFavorited = favorites.some((fav) => fav.mal_id === anime.mal_id);
 
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: anime.images.jpg.image_url }} style={styles.image} />
-      <Text style={styles.title} numberOfLines={2}>{anime.title}</Text>
-
-      <TouchableOpacity onPress={toggleFavorite} style={styles.icon}>
-        <Ionicons
-          name={favorited ? 'heart' : 'heart-outline'}
-          size={24}
-          color={favorited ? 'red' : 'black'}
-        />
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
+      <View style={styles.card}>
+        <Image source={{ uri: anime.images.jpg.image_url }} style={styles.image} />
+        <Text style={styles.title} numberOfLines={2}>{anime.title}</Text>
+        <TouchableOpacity onPress={() => toggleFavorite(anime)} style={styles.button}>
+          <Text style={{ color: 'white' }}>{isFavorited ? 'Remover' : 'Favoritar'}</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   card: {
-    width: '45%',
-    margin: 10,
-    backgroundColor: '#f9f9f9',
-    borderRadius: 8,
+    flex: 1,
+    margin: 8,
+    backgroundColor: '#fff',
+    borderRadius: 10,
     padding: 10,
     alignItems: 'center',
     elevation: 2,
   },
   image: {
-    width: 100,
-    height: 140,
-    borderRadius: 5,
+    width: 120,
+    height: 180,
+    borderRadius: 8,
+    marginBottom: 10,
   },
   title: {
-    marginTop: 8,
-    fontWeight: 'bold',
     fontSize: 14,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
-  icon: {
-    marginTop: 6,
+  button: {
+    marginTop: 8,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    backgroundColor: '#ff6600',
+    borderRadius: 5,
   },
 });
