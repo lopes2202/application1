@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { useUser } from '../context/UserContext';
+import Animated, { FadeInUp } from 'react-native-reanimated';
+
 
 export default function AnimeCard({ anime, onPress }) {
   const { favorites, toggleFavorite } = useUser();
@@ -8,6 +10,7 @@ export default function AnimeCard({ anime, onPress }) {
   const isFavorited = favorites.some((fav) => fav.mal_id === anime.mal_id);
 
   return (
+
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <View style={styles.card}>
         <Image source={{ uri: anime.images.jpg.image_url }} style={styles.image} />

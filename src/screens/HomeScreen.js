@@ -1,16 +1,19 @@
+// HomeScreen.js
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import useFetchAnimes from '../hooks/useFetch';
-import { useUser } from '../context/UserContext'; // <- importante
+import { useUser } from '../context/UserContext';
+import { useTheme } from '../context/ThemeContext'; // <- novo
 
 export default function HomeScreen({ navigation }) {
   const { animes, loading } = useFetchAnimes();
-  const { favorites, toggleFavorite } = useUser(); // <- importante
+  const { favorites, toggleFavorite } = useUser();
+  const { theme } = useTheme(); // <- novo
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#ff6600" />
+      <View style={[styles.loadingContainer, { backgroundColor: theme.background }]}>
+        <ActivityIndicator size="large" color={theme.button} />
       </View>
     );
   }
@@ -20,17 +23,19 @@ export default function HomeScreen({ navigation }) {
       data={animes}
       keyExtractor={(item) => item.mal_id.toString()}
       numColumns={2}
-      contentContainerStyle={styles.listContainer}
+      contentContainerStyle={[styles.listContainer, { backgroundColor: theme.background }]}
       renderItem={({ item }) => {
         const isFavorited = favorites.some(fav => fav.mal_id === item.mal_id);
         return (
-          <View style={styles.card}>
+          <View style={[styles.card, { backgroundColor: theme.card }]}>
             <TouchableOpacity onPress={() => navigation.navigate('Detail', { anime: item })}>
               <Image source={{ uri: item.images.jpg.image_url }} style={styles.image} />
-              <Text style={styles.title} numberOfLines={2}>{item.title}</Text>
+              <Text style={[styles.title, { color: theme.text }]} numberOfLines={2}>
+                {item.title}
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => toggleFavorite(item)} style={styles.favoriteButton}>
-              <Text style={{ color: 'white' }}>{isFavorited ? 'Remover' : 'Favoritar'}</Text>
+            <TouchableOpacity onPress={() => toggleFavorite(item)} style={[styles.favoriteButton, { backgroundColor: theme.button }]}>
+              <Text style={{ color: theme.buttonText }}>{isFavorited ? 'Remover' : 'Favoritar'}</Text>
             </TouchableOpacity>
           </View>
         );
@@ -45,7 +50,6 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     margin: 8,
-    backgroundColor: '#f0f0f0',
     borderRadius: 10,
     overflow: 'hidden',
     alignItems: 'center',
@@ -54,7 +58,6 @@ const styles = StyleSheet.create({
   image: { width: 150, height: 200, resizeMode: 'cover' },
   title: { padding: 8, fontWeight: 'bold', textAlign: 'center' },
   favoriteButton: {
-    backgroundColor: '#ff6600',
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 5,
