@@ -17,8 +17,13 @@ export const UserProvider = ({ children }) => {
     });
   };
 
+  const logout = () => {
+    setUser(null);
+    setFavorites([]);
+  };
+
   return (
-    <UserContext.Provider value={{ user, setUser, favorites, toggleFavorite }}>
+    <UserContext.Provider value={{ user, setUser, favorites, toggleFavorite, logout }}>
       {children}
     </UserContext.Provider>
   );
