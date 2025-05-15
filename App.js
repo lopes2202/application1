@@ -1,11 +1,26 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import StackNavigator from './src/navigation/StackNavigator';
+import { UserProvider, useUser } from './src/context/UserContext';
+import { ThemeProvider } from './src/context/ThemeContext';
+import MainNavigator from './src/navigation/MainNavigation';
+import AuthNavigation from './src/navigation/AuthNavigation'; // ⬅️ Novo import
+
+function AppRoutes() {
+  const { user } = useUser();
+
+  return (
+    <NavigationContainer>
+      {user ? <MainNavigator /> : <AuthNavigation />}  {/* ⬅️ Usa o AuthNavigator agora */}
+    </NavigationContainer>
+  );
+}
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <StackNavigator />
-    </NavigationContainer>
+    <ThemeProvider>
+      <UserProvider>
+        <AppRoutes />
+      </UserProvider>
+    </ThemeProvider>
   );
 }

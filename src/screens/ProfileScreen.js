@@ -1,64 +1,185 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, FlatList, Image } from 'react-native';
-import { getAuth, signOut } from 'firebase/auth';
+import React from 'react';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
+import { useUser } from '../context/UserContext';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useTheme } from '../context/ThemeContext';
 
-export default function ProfileScreen({ navigation }) {
-  const [user, setUser] = useState(null);
-  const [favorites, setFavorites] = useState([]);
+export default function ProfileScreen() {
+  const { user, favorites, toggleFavorite, logout } = useUser();
+  const { toggleTheme, themeName, theme } = useTheme();
 
-  useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setUser(user);
-    });
-
-    const loadFavorites = async () => {
-      const json = await AsyncStorage.getItem('@favoritos');
-      if (json) setFavorites(JSON.parse(json));
-    };
-
-    loadFavorites();
-
-    return () => unsubscribe();
-  }, []);
-
-  const handleLogout = () => {
-    const auth = getAuth();
-    signOut(auth).then(() => navigation.replace('Login'));
-  };
+  const styles = getStyles(theme);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Perfil do Usuário</Text>
-      <Text style={styles.email}>E-mail: {user?.email}</Text>
+      <View style={styles.header}>
+        <Image
+          source={{
+            uri: 'https://i.pinimg.com/736x/64/ae/08/64ae08fbc8e38d2b2c8349feedb5a34e.jpg',
+          }}
+          style={styles.avatar}
+        />
+        <Text style={styles.title}>Perfil do Usuário</Text>
+        <View style={styles.infoRow}>
+          <Icon name="email" size={20} color={theme.text} />
+          <Text style={styles.email}>{user?.email || 'Usuário Anônimo'}</Text>
+        </View>
 
-      <Text style={styles.subtitle}>Favoritos:</Text>
+        <TouchableOpacity style={styles.themeButton} onPress={toggleTheme}>
+          <Text style={styles.themeButtonText}>Alternar Tema: {themeName}</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+          <Icon name="logout" size={20} color="#fff" />
+          <Text style={styles.logoutButtonText}>Sair</Text>
+        </TouchableOpacity>
+      </View>
+
+      <Text style={styles.sectionTitle}>❤️ Favoritos:</Text>
+
       {favorites.length === 0 ? (
-        <Text style={{ color: '#888' }}>Nenhum anime favoritado.</Text>
+        <Text style={styles.emptyText}>Nenhum favorito ainda.</Text>
       ) : (
         <FlatList
           data={favorites}
           keyExtractor={(item) => item.mal_id.toString()}
+          numColumns={2}
+          contentContainerStyle={styles.list}
           renderItem={({ item }) => (
-            <View style={styles.animeCard}>
-              <Image source={{ uri: item.images.jpg.image_url }} style={styles.image} />
-              <Text style={styles.animeTitle}>{item.title}</Text>
+            <View style={styles.card}>
+              <Image
+                source={{ uri: item.images.jpg.image_url }}
+                style={styles.cardImage}
+              />
+              <Text style={styles.cardTitle} numberOfLines={2}>
+                {item.title}
+              </Text>
+              <TouchableOpacity
+                onPress={() => toggleFavorite(item)}
+                style={styles.removeButton}
+              >
+                <Icon name="favorite" size={20} color="#fff" />
+                <Text style={styles.removeButtonText}>Remover</Text>
+              </TouchableOpacity>
             </View>
           )}
         />
       )}
-
-      <Button title="SAIR" onPress={handleLogout} color="#cc0000" />
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', padding: 20, backgroundColor: '#fff' },
-  title: { fontSize: 22, fontWeight: 'bold', marginBottom: 10 },
-  email: { fontSize: 16, marginBottom: 20 },
-  subtitle: { fontSize: 18, fontWeight: 'bold', marginTop: 20 },
-  animeCard: { flexDirection: 'row', alignItems: 'center', marginVertical: 10 },
-  image: { width: 50, height: 70, borderRadius: 5, marginRight: 10 },
-  animeTitle: { fontSize: 16, flexShrink: 1 },
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 16,
+      backgroundColor: theme.background,
+    },
+    header: {
+      alignItems: 'center',
+      marginBottom: 24,
+    },
+    avatar: {
+      width: 90,
+      height: 90,
+      borderRadius: 45,
+      marginBottom: 12,
+    },
+    title: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      color: theme.text,
+    },
+    infoRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 6,
+    },
+    email: {
+      marginLeft: 6,
+      fontSize: 14,
+      color: theme.text,
+    },
+    sectionTitle: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginBottom: 8,
+      color: theme.text,
+    },
+    emptyText: {
+      fontStyle: 'italic',
+      color: '#999',
+      textAlign: 'center',
+    },
+    list: {
+      paddingBottom: 20,
+    },
+    card: {
+      flex: 1,
+      margin: 6,
+      backgroundColor: theme.card,
+      borderRadius: 10,
+      elevation: 2,
+      padding: 8,
+      alignItems: 'center',
+    },
+    cardImage: {
+      width: 100,
+      height: 140,
+      borderRadius: 8,
+    },
+    cardTitle: {
+      marginTop: 6,
+      fontWeight: 'bold',
+      fontSize: 12,
+      textAlign: 'center',
+      color: theme.text,
+    },
+    removeButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginTop: 6,
+      backgroundColor: '#ff4444',
+      paddingVertical: 4,
+      paddingHorizontal: 8,
+      borderRadius: 6,
+    },
+    removeButtonText: {
+      color: '#fff',
+      marginLeft: 6,
+      fontSize: 12,
+    },
+    logoutButton: {
+      marginTop: 16,
+      backgroundColor: '#333',
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      borderRadius: 8,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    logoutButtonText: {
+      color: '#fff',
+      marginLeft: 8,
+      fontSize: 14,
+    },
+    themeButton: {
+      marginTop: 10,
+      backgroundColor: theme.button,
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+      borderRadius: 8,
+    },
+    themeButtonText: {
+      color: '#fff',
+      fontSize: 13,
+    },
+  });
