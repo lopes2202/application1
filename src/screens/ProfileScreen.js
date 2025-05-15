@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, FlatList, Image } from 'react-native';
 import { getAuth, signOut } from 'firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ProfileScreen({ navigation }) {
   const [user, setUser] = useState(null);
