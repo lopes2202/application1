@@ -2,13 +2,12 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: '',
-  authDomain: 'localhost/8000.firebaseapp.com',
-  projectId: 'application-1-bddac',
-  storageBucket: 'SEU_BUCKET',
-  messagingSenderId: 'SEU_SENDER_ID',
-  appId: 'SEU_APP_ID',
+  apiKey: "AIzaSyCCAh1OC6Dk7bRjeBpeg_zqq8r2hzGeD8Y",
+  authDomain: "application-1-bddac.firebaseapp.com",
+  projectId: "application-1-bddac",
+  storageBucket: "application-1-bddac.appspot.com",
+  messagingSenderId: "510266072516",
+  appId: "1:510266072516:web:XXXXXXXXXXXX"
 };
-
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
