@@ -19,7 +19,6 @@ export default function RegisterScreen() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, { displayName: name });
-      // O onAuthStateChanged vai atualizar o contexto do usuário automaticamente
     } catch (error) {
       Alert.alert('Erro ao cadastrar', error.message);
     }

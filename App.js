@@ -6,6 +6,11 @@ import LoginScreen from './src/screens/LoginScreen';
 import MainNavigator from './src/navigation/MainNavigation';
 import { View, ActivityIndicator } from 'react-native';
 
+
+
+
+
+
 function AppRoutes() {
   const { user, loading } = useUser();
 

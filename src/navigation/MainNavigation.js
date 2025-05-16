@@ -40,13 +40,13 @@ export default function MainNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user ? (
-        // Se o usuário está logado, mostra o app principal
+
         <>
           <Stack.Screen name="Drawer" component={DrawerRoutes} />
           <Stack.Screen name="Detail" component={DetailScreen} />
         </>
       ) : (
-        // Se não está logado, mostra login/cadastro
+
         <>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
