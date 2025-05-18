@@ -7,7 +7,7 @@ export default function useFetchAnimes() {
   useEffect(() => {
     const fetchAnimes = async () => {
       try {
-        const response = await fetch('https://api.jikan.moe/v4/anime');
+        const response = await fetch('https://api.jikan.moe/v4/top/anime?');
         const json = await response.json();
         setAnimes(json.data);
       } catch (error) {

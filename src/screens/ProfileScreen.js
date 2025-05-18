@@ -22,11 +22,11 @@ export default function ProfileScreen() {
       <View style={styles.header}>
         <Image
           source={{
-            uri: 'https://i.pinimg.com/736x/64/ae/08/64ae08fbc8e38d2b2c8349feedb5a34e.jpg',
+            uri: 'https://wallpapers.com/images/hd/anya-spy-x-family-hbnpl3tjbs34b24y.jpg',
           }}
           style={styles.avatar}
         />
-        <Text style={styles.title}>Perfil do Usuário</Text>
+        <Text style={styles.title}>{user?.name}</Text>
         <View style={styles.infoRow}>
           <Icon name="email" size={20} color={theme.text} />
           <Text style={styles.email}>{user?.email || 'Usuário Anônimo'}</Text>
