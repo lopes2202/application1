@@ -23,9 +23,9 @@ function AppRoutes() {
   }
 
   return (
-    <NavigationContainer>
-      {user ? <MainNavigator /> : <LoginScreen />}
-    </NavigationContainer>
+     <NavigationContainer>
+    <MainNavigator />
+  </NavigationContainer>
   );
 }
 

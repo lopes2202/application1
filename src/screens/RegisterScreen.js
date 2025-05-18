@@ -3,7 +3,7 @@ import { View, TextInput, Button, StyleSheet, Text, Alert } from 'react-native';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from '../../firebaseconfig';
 
-export default function RegisterScreen() {
+export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,6 +19,9 @@ export default function RegisterScreen() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       await updateProfile(userCredential.user, { displayName: name });
+
+      Alert.alert('Sucesso', 'Usuário cadastrado com sucesso!');
+      navigation.navigate('Login'); 
     } catch (error) {
       Alert.alert('Erro ao cadastrar', error.message);
     }
@@ -35,3 +38,25 @@ export default function RegisterScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#fff'
+  },
+  title: {
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 10,
+    marginBottom: 15,
+    borderRadius: 5,
+  }
+});
