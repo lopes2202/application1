@@ -6,10 +6,10 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import DetailScreen from '../screens/DetailScreen';
-import LoginScreen from '../screens/LoginScreen';
-import RegisterScreen from '../screens/RegisterScreen';
 
 import { useUser } from '../context/UserContext';
+import AuthNavigation from './AuthNavigation';
+import CustomDrawerContent from '../context/CustomDrawerContent'
 
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -17,6 +17,7 @@ const Stack = createNativeStackNavigator();
 function DrawerRoutes() {
   return (
     <Drawer.Navigator
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={({ navigation }) => ({
         headerRight: () => (
           <Ionicons
@@ -36,22 +37,23 @@ function DrawerRoutes() {
 
 export default function MainNavigator() {
   const { user } = useUser();
+  console.log("Rota atual:", user ? "Drawer" : "Auth");
+
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       {user ? (
-
         <>
           <Stack.Screen name="Drawer" component={DrawerRoutes} />
           <Stack.Screen name="Detail" component={DetailScreen} />
         </>
       ) : (
-
         <>
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Auth" component={AuthNavigation} />          
         </>
       )}
     </Stack.Navigator>
   );
+
+  
 }

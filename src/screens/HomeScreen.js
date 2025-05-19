@@ -1,14 +1,13 @@
-// HomeScreen.js
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import useFetchAnimes from '../hooks/useFetch';
 import { useUser } from '../context/UserContext';
-import { useTheme } from '../context/ThemeContext'; // <- novo
+import { useTheme } from '../context/ThemeContext'; 
 
 export default function HomeScreen({ navigation }) {
   const { animes, loading } = useFetchAnimes();
   const { favorites, toggleFavorite } = useUser();
-  const { theme } = useTheme(); // <- novo
+  const { theme } = useTheme(); 
 
   if (loading) {
     return (
