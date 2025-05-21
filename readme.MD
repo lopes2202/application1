@@ -1,6 +1,6 @@
 # 📱 AnimeApp
 
-Um aplicativo mobile de animes feito com **React Native** e **Expo**, que permite aos usuários se registrarem, fazerem login, visualizar uma lista de animes, favoritar seus preferidos e ver seu perfil. Os dados de autenticação e favoritos são integrados com o **Firebase**.
+Um aplicativo mobile de animes feito com **React Native** e **Expo**, que permite aos usuários se registrarem, fazerem login, visualizar uma lista de animes, favoritar seus preferidos e ver seu perfil. Os dados de autenticação são integrados com o **Firebase**.
 
 ---
 
