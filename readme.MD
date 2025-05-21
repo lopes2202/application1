@@ -8,7 +8,6 @@ Um aplicativo mobile de animes feito com **React Native** e **Expo**, que permit
 
 - 🔐 Autenticação de usuários com Firebase (e-mail e senha)
 - 🏠 Tela inicial com listagem de animes (API pública)
-- ❤️ Sistema de favoritos com persistência
 - 👤 Tela de perfil com dados do usuário e lista de animes favoritos
 - 🌙 Suporte a tema escuro (Dark Mode)
 - 📦 Armazenamento local (com possível uso de AsyncStorage)
