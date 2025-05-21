@@ -48,8 +48,7 @@ App.js                  # Entrada principal do app
 
 1. Crie um projeto no [Firebase Console](https://console.firebase.google.com).
 2. Ative o **Authentication (Email/Password)**.
-3. Configure o **Firestore** para armazenar os favoritos, se necessário.
-4. Adicione seu `firebaseConfig` no arquivo `firebaseconfig.js`.
+3. Adicione seu `firebaseConfig` no arquivo `firebaseconfig.js`.
 
 ```js
 import { initializeApp } from 'firebase/app';
