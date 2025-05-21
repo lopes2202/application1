@@ -79,8 +79,8 @@ export const auth = getAuth(app);
 ### Instalação:
 
 ```bash
-git clone https://github.com/seu-usuario/animeapp.git
-cd animeapp
+git clone https://github.com/lopes2202/application1.git
+cd application1
 npm install
 ```
 
