@@ -76,9 +76,6 @@ export default function ProfileScreen() {
   );
 }
 
-
- 
-
 const getStyles = (theme) =>
   StyleSheet.create({
     container: {
